@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-' markdown to directory to docx'
+' pdf to docx'
 
 __author__ = 'bushnerd'
 
