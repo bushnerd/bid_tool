@@ -7,3 +7,4 @@ image_dir
 source_dir
 bid.docx
 ~$bid.docx
+.vscode/launch.json
