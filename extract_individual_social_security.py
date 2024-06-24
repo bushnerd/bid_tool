@@ -3,6 +3,7 @@ import logging
 import fitz
 import pdf2image
 from PIL import Image, ImageDraw, ImageFont
+from tkinter import Tk, filedialog
 
 logging.basicConfig(level=logging.INFO)
 
@@ -11,10 +12,21 @@ def extract_individual_social_security(employee_name):
 
     # 1. 读取全员社保证明文件
     try:
-        doc = fitz.open("全员社保.pdf")
+        # 使用文件选择窗口选择PDF文件
+        root = Tk()
+        root.withdraw()  # 隐藏主窗口
+        file_path = filedialog.askopenfilename(title="选择全员社保证明文件", filetypes=[("PDF files", "*.pdf")])
+        if not file_path:
+            logging.error("未选择任何文件！")
+            return
+
+        doc = fitz.open(file_path)
         total_pages = doc.page_count
     except FileNotFoundError:
         logging.error("找不到全员社保证明文件！")
+        return
+    except Exception as e:
+        logging.error(f"打开文件时出现错误：{e}")
         return
 
     # 2. 查找员工姓名所在的页码和坐标
@@ -34,7 +46,7 @@ def extract_individual_social_security(employee_name):
 
     # 3. 导出包含员工姓名的页面为图片，并以员工姓名为文件名保存到当前目录
     try:
-        images = pdf2image.convert_from_path("全员社保.pdf", first_page=employee_page+1, last_page=employee_page+1)
+        images = pdf2image.convert_from_path(file_path, first_page=employee_page+1, last_page=employee_page+1)
         image = images[0]  # 取第一张图片
 
         # 创建可绘制对象
