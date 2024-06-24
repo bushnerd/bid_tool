@@ -91,7 +91,8 @@ if __name__ == "__main__":
         employee_names = " ".join(sys.argv[2:])
     elif len(sys.argv) == 2:
         file_path = sys.argv[1]
-        employee_names = simpledialog.askstring("输入员工姓名", "请输入员工姓名（多个姓名用空格隔开）：")
+        print("请输入员工姓名（多个姓名用空格隔开）：")
+        employee_names = input().strip()
         if not employee_names:
             logging.error("未输入任何员工姓名！")
             sys.exit(1)
@@ -100,7 +101,8 @@ if __name__ == "__main__":
         if not file_path:
             logging.error("未选择任何文件！")
             sys.exit(1)
-        employee_names = simpledialog.askstring("输入员工姓名", "请输入员工姓名（多个姓名用空格隔开）：")
+        print("请输入员工姓名（多个姓名用空格隔开）：")
+        employee_names = input().strip()
         if not employee_names:
             logging.error("未输入任何员工姓名！")
             sys.exit(1)
