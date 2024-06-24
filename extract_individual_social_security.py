@@ -3,23 +3,15 @@ import logging
 import fitz
 import pdf2image
 from PIL import Image, ImageDraw, ImageFont
-from tkinter import Tk, filedialog
+from tkinter import Tk, filedialog, simpledialog
 
 logging.basicConfig(level=logging.INFO)
 
-def extract_individual_social_security(employee_name):
+def extract_individual_social_security(file_path, employee_name):
     logging.info(f"开始提取 {employee_name} 的社保信息...")
 
     # 1. 读取全员社保证明文件
     try:
-        # 使用文件选择窗口选择PDF文件
-        root = Tk()
-        root.withdraw()  # 隐藏主窗口
-        file_path = filedialog.askopenfilename(title="选择全员社保证明文件", filetypes=[("PDF files", "*.pdf")])
-        if not file_path:
-            logging.error("未选择任何文件！")
-            return
-
         doc = fitz.open(file_path)
         total_pages = doc.page_count
     except FileNotFoundError:
@@ -91,8 +83,28 @@ def extract_individual_social_security(employee_name):
     logging.info(f"{employee_name} 的社保信息提取完成！")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python extract_individual_social_security.py <employee_name1> <employee_name2> ...")
+    root = Tk()
+    root.withdraw()  # 隐藏主窗口
+
+    if len(sys.argv) > 2:
+        file_path = sys.argv[1]
+        employee_names = " ".join(sys.argv[2:])
+    elif len(sys.argv) == 2:
+        file_path = sys.argv[1]
+        employee_names = simpledialog.askstring("输入员工姓名", "请输入员工姓名（多个姓名用空格隔开）：")
+        if not employee_names:
+            logging.error("未输入任何员工姓名！")
+            sys.exit(1)
     else:
-        for employee_name in sys.argv[1:]:
-            extract_individual_social_security(employee_name)
+        file_path = filedialog.askopenfilename(title="选择全员社保证明文件", filetypes=[("PDF files", "*.pdf")])
+        if not file_path:
+            logging.error("未选择任何文件！")
+            sys.exit(1)
+        employee_names = simpledialog.askstring("输入员工姓名", "请输入员工姓名（多个姓名用空格隔开）：")
+        if not employee_names:
+            logging.error("未输入任何员工姓名！")
+            sys.exit(1)
+
+    employee_name_list = employee_names.split()
+    for employee_name in employee_name_list:
+        extract_individual_social_security(file_path, employee_name)
