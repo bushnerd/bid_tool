@@ -5,12 +5,17 @@ from docx import Document
 from docx.shared import Inches, Cm
 from pdf2image import convert_from_path
 from PIL import Image
+import tkinter as tk
+from tkinter import filedialog
 
 # 设置日志配置
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # 定义路径
-markdown_file = r'D:\github\bid_tool\bid.md'
+root = tk.Tk()
+root.withdraw()  # 隐藏主窗口
+markdown_file = filedialog.askopenfilename(filetypes=[("Markdown files", "*.md")], title="请选择 Markdown 文件")
+
 source_dir = r'D:\github\bid_tool\source_dir'
 image_dir = r'D:\github\bid_tool\image_dir'
 template_path = r'D:\OneDrive\documents\template\9级目录模板.docx'
