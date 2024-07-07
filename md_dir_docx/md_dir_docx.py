@@ -18,6 +18,23 @@ output_docx = r'D:\github\bid_tool\bid.docx'
 
 # 根据 markdown 结构创建目录
 def create_dirs_from_markdown(markdown_file, base_dir):
+    """
+    Creates directories based on the markdown file structure.
+
+    Args:
+        markdown_file (str): The path to the markdown file.
+        base_dir (str): The base directory where the directories will be created.
+
+    Returns:
+        None
+
+    This function reads the lines of the markdown file and creates directories based on the heading levels specified in the markdown file. The function uses a stack-based approach to store the current paths and ensures that the current paths match the markdown's heading levels. The function creates a new directory based on the current path and the folder name extracted from the markdown line. The function logs the creation of each directory.
+
+    Example:
+        create_dirs_from_markdown('path/to/markdown.md', 'path/to/base_dir')
+    """
+    logging.info(f"Creating directories from markdown file: {markdown_file}")
+    logging.info(f"Base directory: {base_dir}")
     with open(markdown_file, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
@@ -30,12 +47,13 @@ def create_dirs_from_markdown(markdown_file, base_dir):
             # 保证current_paths与markdown的层级一致
             while len(current_paths) > level:
                 current_paths.pop()
+                logging.info(f"Popped path: {current_paths[-1]}")
             
             # 创建新的路径并存入栈中
             current_path = os.path.join(current_paths[-1], folder_name)
             os.makedirs(current_path, exist_ok=True)
             current_paths.append(current_path)
-            logging.info(f'Created directory: {current_path}')
+            logging.info(f"Created directory: {current_path}")
 
 create_dirs_from_markdown(markdown_file, source_dir)
 
