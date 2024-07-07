@@ -8,3 +8,5 @@ source_dir
 bid.docx
 ~$bid.docx
 .vscode/launch.json
+extract_individual_social_security/build/extract_individual_social_security
+extract_individual_social_security/dist
