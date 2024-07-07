@@ -46,7 +46,7 @@ else:
 
 # 提取文件ID和文件名
 file_id = data_2['data']['resattachmentInfo'][0]['id']
-file_name = data_2['data']['resattachmentInfo'][0]['aTitle']
+file_name = data_2['data']['resattachmentInfo'][0]['aTitle'] + ".pdf"
 logging.info(f"File ID: {file_id}, File Name: {file_name}")
 
 # 第三个请求的信息，下载文件
@@ -84,4 +84,4 @@ else:
 with open(file_name, 'wb') as file:
     file.write(response_3.content)
 
-logging.info(f"Download completed. File saved as {file_name}.pdf")
+logging.info(f"Download completed. File saved as {file_name}")
