@@ -12,3 +12,4 @@ extract_individual_social_security/build/extract_individual_social_security
 extract_individual_social_security/dist
 md_dir_docx/build/md_dir_docx
 md_dir_docx/dist
+*.pdf

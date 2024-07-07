@@ -25,19 +25,32 @@ data_1 = response_1.json()
 
 # 检查响应状态码和内容
 if response_1.status_code == 200:
-    logging.info("Request was successful")
+    logging.info("First request was successful")
 else:
-    logging.error(f"Request failed with status code {response_1.status_code}")
+    logging.error(f"First request failed with status code {response_1.status_code}")
 
-# 提取文件ID和resourceName
-file_id = data_1['data']['lst'][0]['resId']
-resource_name = data_1['data']['lst'][0]['resourcesName']
-logging.info(f"File ID: {file_id}")
-logging.info(f"Resource Name: {resource_name}")
+# 提取资源ID
+res_id = data_1['data']['lst'][0]['resId']
+logging.info(f"Res ID: {res_id}")
 
+# 第二个请求的信息，获取资质详情
+url_2 = f'http://10.217.248.47:8086/icp_zuul_web/icp-resource/qualifiche/getQualificheById?resId={res_id}&urlType=0'
+response_2 = requests.get(url_2, headers=headers_1)
+data_2 = response_2.json()
 
-# 第二个请求的信息
-url_2 = 'http://10.217.248.47:8086/icp_zuul_web/icp-attachment/zip/qualificationDownloadZipFile'
+# 检查第二个请求的响应状态码
+if response_2.status_code == 200:
+    logging.info("Second request was successful")
+else:
+    logging.error(f"Second request failed with status code {response_2.status_code}")
+
+# 提取文件ID和文件名
+file_id = data_2['data']['resattachmentInfo'][0]['id']
+file_name = data_2['data']['resattachmentInfo'][0]['aTitle']
+logging.info(f"File ID: {file_id}, File Name: {file_name}")
+
+# 第三个请求的信息，下载文件
+url_3 = 'http://10.217.248.47:8086/icp_zuul_web/icp-attachment/zip/qualificationDownloadZipFile'
 headers_2 = {
     'Accept': 'application/json, text/plain, */*',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
@@ -49,7 +62,7 @@ headers_2 = {
     'Referer': 'http://10.217.248.47:8086/icp_web/',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
 }
-data_2 = {
+data_3 = {
     "batchDownloadReqs": [
         {
             "fileId": file_id,
@@ -58,20 +71,17 @@ data_2 = {
     ]
 }
 
-# 发送第二个请求
-response_2 = requests.post(url_2, headers=headers_2, json=data_2)
+# 发送第三个请求，下载文件
+response_3 = requests.post(url_3, headers=headers_2, json=data_3)
 
-# 检查第二个请求的响应状态码
-if response_2.status_code == 200:
+# 检查第三个请求的响应状态码
+if response_3.status_code == 200:
     logging.info("Download request was successful")
 else:
-    logging.error(f"Download request failed with status code {response_2.status_code}")
-
-# 生成文件名
-file_name = f"{resource_name}.pdf"
+    logging.error(f"Download request failed with status code {response_3.status_code}")
 
 # 保存下载的文件
 with open(file_name, 'wb') as file:
-    file.write(response_2.content)
+    file.write(response_3.content)
 
-logging.info(f"Download completed. File saved as {file_name}.")
+logging.info(f"Download completed. File saved as {file_name}.pdf")
