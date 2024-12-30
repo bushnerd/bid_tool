@@ -1,11 +1,21 @@
+import os
 import sys
 import logging
 import fitz
-import pdf2image
+from pdf2image import convert_from_path
 from PIL import Image, ImageDraw, ImageFont
 from tkinter import Tk, filedialog, simpledialog
 
 logging.basicConfig(level=logging.INFO)
+
+# 获取 PyInstaller 打包后的路径
+if getattr(sys, 'frozen', False):  # 判断是否是 PyInstaller 打包的应用
+    current_dir = sys._MEIPASS  # 获取 PyInstaller 临时目录
+else:
+    current_dir = os.path.dirname(__file__)  # 如果是源代码运行，获取当前脚本目录
+
+# Poppler 可执行文件的路径
+poppler_path = os.path.join(current_dir, 'poppler', 'bin')
 
 def extract_individual_social_security(file_path, employee_name):
     logging.info(f"开始提取 {employee_name} 的社保信息...")
@@ -38,7 +48,7 @@ def extract_individual_social_security(file_path, employee_name):
 
     # 3. 导出包含员工姓名的页面为图片，并以员工姓名为文件名保存到当前目录
     try:
-        images = pdf2image.convert_from_path(file_path, first_page=employee_page+1, last_page=employee_page+1)
+        images = convert_from_path(file_path, first_page=employee_page+1, last_page=employee_page+1, poppler_path=poppler_path)
         image = images[0]  # 取第一张图片
 
         # 创建可绘制对象

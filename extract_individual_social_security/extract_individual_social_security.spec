@@ -5,7 +5,7 @@ a = Analysis(
     ['extract_individual_social_security.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('poppler/bin/*', 'poppler/bin')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
