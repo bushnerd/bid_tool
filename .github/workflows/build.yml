@@ -1,0 +1,43 @@
+name: Build Python Tools
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build extract_individual_social_security
+        working-directory: ./extract_individual_social_security
+        run: |
+          pyinstaller --onefile --add-data "poppler/bin/*;poppler/bin" extract_individual_social_security.py
+
+      - name: Build md_dir_docx
+        working-directory: ./md_dir_docx
+        run: |
+          pyinstaller --onefile --add-data "9outline.docx;." md_dir_docx.py
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-tools
+          path: |
+            extract_individual_social_security/dist/
+            md_dir_docx/dist/

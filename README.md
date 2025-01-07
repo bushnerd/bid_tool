@@ -68,3 +68,28 @@ pip install -r requirements.txt
 ## 许可证
 
 本项目采用 MIT 许可证，详见 LICENSE 文件。
+
+## CI/CD 工作流
+
+[![Build Status](https://github.com/bushnerd/bid_tool/actions/workflows/build.yml/badge.svg)](https://github.com/bushnerd/bid_tool/actions)
+
+本项目使用 GitHub Actions 自动打包工具：
+
+1. 当推送代码到 main 分支或创建 Pull Request 时触发构建
+2. 自动安装 Python 3.9 和依赖
+3. 使用 PyInstaller 打包工具：
+   - `extract_individual_social_security`：包含 poppler 二进制文件
+   - `md_dir_docx`：包含 9outline.docx 模板文件
+4. 构建结果自动上传为 artifacts
+
+### 本地打包
+
+```bash
+# 打包社保信息提取工具
+cd extract_individual_social_security
+pyinstaller --onefile --add-data "poppler/bin/*;poppler/bin" extract_individual_social_security.py
+
+# 打包Markdown转Word工具
+cd ../md_dir_docx
+pyinstaller --onefile --add-data "9outline.docx;." md_dir_docx.py
+```
