@@ -75,7 +75,10 @@ pip install -r requirements.txt
 
 本项目使用 GitHub Actions 自动打包工具：
 
-1. 当推送代码到 main 分支或创建 Pull Request 时触发构建
+1. 支持以下触发方式：
+   - 推送代码到 main 分支
+   - 创建 Pull Request
+   - 手动触发构建（GitHub Actions 页面点击 Run workflow）
 2. 自动安装 Python 3.9 和依赖
 3. 使用 PyInstaller 打包工具：
    - `extract_individual_social_security`：包含 poppler 二进制文件
