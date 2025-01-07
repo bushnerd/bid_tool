@@ -157,6 +157,11 @@ def create_docx_from_markdown(markdown_file, doc, base_dir, image_dir):
                         run.add_picture(image_path, width=Inches(width_in_inches))
                         paragraph.style = doc.styles['图片样式']
                         logging.info(f'Inserted image into document with style "图片样式": {image_path}')
+
+                        # 如果是最后一张图片，插入分页符
+                        if file == os.listdir(image_subdir)[-1]:
+                            doc.add_page_break()
+                            logging.info(f'Inserted page break after last image in section: {title}')
 # 调用函数
 create_docx_from_markdown(markdown_file, doc, source_dir, image_dir)
 
