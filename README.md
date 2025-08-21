@@ -100,8 +100,6 @@ pip install -r requirements.txt
 
 - 功能：智慧协同平台下载工具
 
-````
-
 ## 许可证
 
 本项目采用 GNU General Public License v3.0 (GPLv3) 许可证，详见 LICENSE 文件。
@@ -132,4 +130,4 @@ pyinstaller --onefile --add-data "poppler/bin/*;poppler/bin" extract_individual_
 # 打包Markdown转Word工具
 cd ../md_dir_docx
 pyinstaller --onefile --add-data "9outline.docx;." md_dir_docx.py
-````
+```
