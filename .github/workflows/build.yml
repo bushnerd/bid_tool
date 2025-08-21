@@ -42,3 +42,48 @@ jobs:
           path: |
             extract_individual_social_security/dist/
             md_dir_docx/dist/
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: built-tools
+          path: ./dist
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload extract_individual_social_security.exe
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/extract_individual_social_security/extract_individual_social_security.exe
+          asset_name: extract_individual_social_security.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload md_dir_docx.exe
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/md_dir_docx/md_dir_docx.exe
+          asset_name: md_dir_docx.exe
+          asset_content_type: application/octet-stream
