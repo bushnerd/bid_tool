@@ -59,8 +59,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.event.inputs.release_version || format('Release {0}', github.ref_name) }} # 优先使用手动输入的版本号
+          tag_name: ${{ github.ref_name }} # 修改为 github.ref_name
+          release_name: ${{ github.event.inputs.release_version || format('Release {0}', github.ref_name) }} # 保持不变，但现在 github.ref_name 更准确
           body: |
             # Release Notes for ${{ github.event.inputs.release_version || github.ref_name }}
 
