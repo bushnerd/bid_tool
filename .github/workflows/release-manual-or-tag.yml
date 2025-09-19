@@ -14,6 +14,8 @@ on:
 jobs:
   build_and_release:
     runs-on: windows-latest
+    permissions:
+      contents: write # 添加此行以授予创建 Release 的权限
 
     steps:
       - name: Checkout repository
