@@ -78,7 +78,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/extract_individual_social_security/extract_individual_social_security.exe
+          asset_path: ./extract_individual_social_security/dist/extract_individual_social_security.exe # 修改此行
           asset_name: extract_individual_social_security.exe
           asset_content_type: application/octet-stream
 
@@ -88,6 +88,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/md_dir_docx/md_dir_docx.exe
+          asset_path: ./md_dir_docx/dist/md_dir_docx.exe # 修改此行
           asset_name: md_dir_docx.exe
           asset_content_type: application/octet-stream
