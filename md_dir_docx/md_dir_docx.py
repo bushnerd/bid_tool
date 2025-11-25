@@ -15,6 +15,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 root = tk.Tk()
 root.withdraw()  # 隐藏主窗口
 markdown_file = filedialog.askopenfilename(filetypes=[("Markdown files", "*.md")], title="请选择 Markdown 文件")
+working_directory = filedialog.askdirectory(title="请选择工作目录")
 
 # 获取 .md 文件所在目录
 md_file_dir = os.path.dirname(markdown_file)
@@ -22,13 +23,13 @@ md_file_dir = os.path.dirname(markdown_file)
 # 获取 .py 文件所在目录
 py_file_dir = os.path.dirname(__file__)
 
-source_dir = os.path.join(md_file_dir, 'source_dir')
-image_dir = os.path.join(md_file_dir, 'image_dir')
+source_dir = os.path.join(working_directory, 'source_dir')
+image_dir = os.path.join(working_directory, 'image_dir')
 template_path = os.path.join(py_file_dir, '9outline.docx')
 
 # 获取 markdown 文件名（不包括扩展名）
 markdown_filename = os.path.splitext(os.path.basename(markdown_file))[0]
-output_docx = os.path.join(md_file_dir, f'{markdown_filename}.docx')
+output_docx = os.path.join(working_directory, f'{markdown_filename}.docx')
 
 # 根据 markdown 结构创建目录
 def create_dirs_from_markdown(markdown_file, base_dir):
