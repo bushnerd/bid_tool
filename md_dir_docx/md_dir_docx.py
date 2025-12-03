@@ -1,5 +1,6 @@
 import os
 import shutil
+import re
 import logging
 from docx import Document
 from docx.shared import Inches, Cm
@@ -130,6 +131,7 @@ def create_docx_from_markdown(markdown_file, doc, base_dir, image_dir):
         if line.startswith('#'):
             level = line.count('#')
             title = line.strip('#').strip()
+            title = re.sub(r'^\d+(\.\d+)*\s*', '', title)
             while len(current_paths) > level:
                 current_paths.pop()
             current_paths.append(title)
