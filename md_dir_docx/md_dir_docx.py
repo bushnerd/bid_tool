@@ -131,10 +131,11 @@ def create_docx_from_markdown(markdown_file, doc, base_dir, image_dir):
         if line.startswith('#'):
             level = line.count('#')
             title = line.strip('#').strip()
-            title = re.sub(r'^\d+(\.\d+)*\s*', '', title)
+            title = re.sub(r'^([\d]+\.)+[\d]*\.?\s*', '', title)  # 移除开头的数字序号及可能的多余点和空格
             while len(current_paths) > level:
                 current_paths.pop()
             current_paths.append(title)
+            logging.debug(f'标题处理后：{title}')
             doc.add_heading(title, level=level)
             logging.info(f'Added heading: {title} at level {level}')
 
